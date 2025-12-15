@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/graphql.py": {
-      "runtime": "@vercel/python"
+      "runtime": "@vercel/python@3.10"
     }
   }
 }
