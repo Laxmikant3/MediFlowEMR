@@ -10,8 +10,8 @@ from appointment_service import (
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/graphql", methods=["POST"])
-def graphql_handler():
+@app.route("/", methods=["POST"])
+def handler():
     body = request.json or {}
     query = body.get("query", "")
     variables = body.get("variables", {})
@@ -35,4 +35,3 @@ def graphql_handler():
         return jsonify({"data": {"saveAppointment": saved}})
 
     return jsonify({"errors": ["Unknown operation"]}), 400
-
