@@ -36,5 +36,3 @@ def graphql_handler():
 
     return jsonify({"errors": ["Unknown operation"]}), 400
 
-# 🚫 DO NOT call app.run()
-# Vercel executes this as a serverless function
