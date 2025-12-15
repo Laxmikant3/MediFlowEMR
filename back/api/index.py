@@ -1,17 +1,21 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
 from appointment_service import (
     get_appointments,
     update_appointment_status,
     add_or_update_appointment,
 )
 
+# ---------------------------
+# Flask App (REQUIRED NAME)
+# ---------------------------
 app = Flask(__name__)
 CORS(app)
 
 @app.route("/api/graphql", methods=["POST"])
 def graphql_handler():
-    body = request.json or {}
+    body = request.get_json(force=True, silent=True) or {}
     query = body.get("query", "")
     variables = body.get("variables", {})
 
@@ -45,3 +49,5 @@ def graphql_handler():
         })
 
     return jsonify({"errors": ["Unknown operation"]}), 400
+
+# 🚫 DO NOT use app.run()
