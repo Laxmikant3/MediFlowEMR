@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
 from appointment_service import (
     get_appointments,
     update_appointment_status,
@@ -10,8 +9,8 @@ from appointment_service import (
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/", methods=["POST"])
-def handler():
+@app.route("/api/graphql", methods=["POST"])
+def graphql_handler():
     body = request.json or {}
     query = body.get("query", "")
     variables = body.get("variables", {})
