@@ -1,18 +1,38 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
 from appointment_service import (
     get_appointments,
     update_appointment_status,
     add_or_update_appointment,
 )
 
+# ---------------------------
+# Load environment variables
+# ---------------------------
+load_dotenv()
+
+APP_PORT = int(os.getenv("APP_PORT", 5000))
+FLASK_DEBUG = os.getenv("FLASK_DEBUG", "1") == "1"
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*")
+
 app = Flask(__name__)
-CORS(app)
+
+# ---------------------------
+# CORS Configuration
+# ---------------------------
+CORS(
+    app,
+    resources={r"/graphql": {"origins": ALLOWED_ORIGINS}}
+)
 
 @app.route("/graphql", methods=["POST"])
 def graphql_handler():
     body = request.json
     print("Received GraphQL Request:", body)
+
     query = body.get("query", "")
     variables = body.get("variables", {})
 
@@ -49,8 +69,8 @@ def graphql_handler():
     # ---------------------------
     if "saveAppointment" in query:
         appointment = variables.get("input")
-        saved = add_or_update_appointment(appointment)
 
+        saved = add_or_update_appointment(appointment)
         return jsonify({
             "data": {
                 "saveAppointment": saved
@@ -66,4 +86,9 @@ def graphql_handler():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    print(f"🚀 Starting {os.getenv('APP_NAME', 'MediQueue')} backend")
+    app.run(
+        host="0.0.0.0",
+        port=APP_PORT,
+        debug=FLASK_DEBUG
+    )
