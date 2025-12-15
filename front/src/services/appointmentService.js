@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:5000/graphql";
+const API_URL = process.env.REACT_APP_API_URL;
 
 async function graphqlRequest(query, variables = {}) {
   const res = await fetch(API_URL, {
@@ -53,3 +53,4 @@ export async function updateAppointmentStatus(id, status) {
   const data = await graphqlRequest(query, { id, status });
   return data.updateAppointmentStatus;
 }
+
