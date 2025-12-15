@@ -1,13 +1,7 @@
 {
   "functions": {
-    "api/index.py": {
+    "api/graphql.py": {
       "runtime": "python3.10"
     }
-  },
-  "routes": [
-    {
-      "src": "/graphql",
-      "dest": "/api/index.py"
-    }
-  ]
+  }
 }
