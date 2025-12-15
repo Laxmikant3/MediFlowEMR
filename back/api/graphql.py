@@ -17,21 +17,32 @@ def handler():
     variables = body.get("variables", {})
 
     if "getAppointments" in query:
-        data = get_appointments(
-            date=variables.get("date"),
-            status=variables.get("status")
-        )
-        return jsonify({"data": {"getAppointments": data}})
+        return jsonify({
+            "data": {
+                "getAppointments": get_appointments(
+                    date=variables.get("date"),
+                    status=variables.get("status")
+                )
+            }
+        })
 
     if "updateAppointmentStatus" in query:
-        updated = update_appointment_status(
-            variables.get("id"),
-            variables.get("status")
-        )
-        return jsonify({"data": {"updateAppointmentStatus": updated}})
+        return jsonify({
+            "data": {
+                "updateAppointmentStatus": update_appointment_status(
+                    variables.get("id"),
+                    variables.get("status")
+                )
+            }
+        })
 
     if "saveAppointment" in query:
-        saved = add_or_update_appointment(variables.get("input"))
-        return jsonify({"data": {"saveAppointment": saved}})
+        return jsonify({
+            "data": {
+                "saveAppointment": add_or_update_appointment(
+                    variables.get("input")
+                )
+            }
+        })
 
     return jsonify({"errors": ["Unknown operation"]}), 400
